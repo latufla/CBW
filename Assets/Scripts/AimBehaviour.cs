@@ -1,13 +1,10 @@
 ﻿using UnityEngine;
-using UnityEngine.Events;
 using UnityEngine.EventSystems;
 
 namespace Assets.Scripts
 {
-    public class AimBehaviour : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
+    public class AimBehaviour : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     {
-        public UnityAction<Vector2> OnClick;
-
         [SerializeField]
         private GameObject _pointer;
 
@@ -34,7 +31,10 @@ namespace Assets.Scripts
                 var radius = _aimTransform.sizeDelta.x / 2;
                 var distance = new Vector2(locPos.x, locPos.y).magnitude;
 
-                if(distance <= radius)
+                locPos.x = Mathf.Round(locPos.x * 10) / 10;
+                locPos.y = Mathf.Round(locPos.y * 10) / 10;
+                
+                if (distance <= radius)
                     _pointerTransform.localPosition = locPos;
             }
         }
@@ -42,24 +42,17 @@ namespace Assets.Scripts
         public void OnPointerEnter(PointerEventData eventData)
         {
             _active = true;
-            Debug.Log("Enter");
         }
 
         public void OnPointerExit(PointerEventData eventData)
         {
             _active = false;
-
-            Debug.Log("Exit");
         }
 
-        public void OnPointerClick(PointerEventData eventData)
+        public Vector2 CalcPoint()
         {
-            if (OnClick != null)
-            {
-                var radius = _aimTransform.sizeDelta.x / 2;
-                var point = _pointerTransform.localPosition / radius;
-                OnClick(point);
-            }
-        }        
+            var radius = _aimTransform.sizeDelta.x / 2;
+            return _pointerTransform.localPosition / radius;
+        }       
     }
 }

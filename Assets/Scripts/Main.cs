@@ -7,10 +7,12 @@ using UnityEngine.SceneManagement;
 public class Main : MonoBehaviour
 {
     [SerializeField]
-    private GameObject _aimUi;
+    private AimBehaviour _aimBehaviour;
 
     [SerializeField]
     private GameObject _ball = null;
+    [SerializeField]    
+    private BallBehaviour _ballBehaviour;
     private Rigidbody _ballBody;
 
     [SerializeField]
@@ -34,10 +36,8 @@ public class Main : MonoBehaviour
 
         _impulse = Util.CalcImpulse(_ballBody.mass, _ballServeSpeedMs);
 	    _trajectory = _ball.GetComponent<LineRenderer>();
-
-	    var aim = _aimUi.GetComponent<AimBehaviour>();
-	    aim.OnClick = HandleAimClick;
 	}
+
 
     public void HandleAimClick(Vector2 pos)
     {
@@ -47,6 +47,12 @@ public class Main : MonoBehaviour
 	// Update is called once per frame
 	void Update ()
     {
+        if(Input.GetKeyDown(KeyCode.Mouse0))
+        {
+            var pos = _aimBehaviour.CalcPoint();
+            _ballBehaviour.HitPoint = pos;
+        }
+
 	    if (Input.GetKeyDown(KeyCode.Return))
 	    {
             SceneManager.LoadScene("Main");
@@ -58,6 +64,7 @@ public class Main : MonoBehaviour
 	        var vMs = Mathf.Sqrt(2 * -Physics.gravity.y * _height);
             var imp = Util.CalcImpulse(_ballBody.mass, vMs);
             _ballBody.AddForce(Vector3.up * imp, ForceMode.Impulse);
+            _ballBody.useGravity = true;
         }
 
         // serve trajectory
