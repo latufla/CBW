@@ -10,16 +10,13 @@ namespace Assets.Scripts
 
         private RectTransform _pointerTransform;
 
-        private GameObject _aim;
         private RectTransform _aimTransform;
 
         private bool _active;
 
         public void Start()
         {
-            _aim = gameObject;
-
-            _aimTransform = _aim.GetComponent<RectTransform>();
+            _aimTransform = gameObject.GetComponent<RectTransform>();
             _pointerTransform = _pointer.GetComponent<RectTransform>();
         }
 
@@ -27,7 +24,15 @@ namespace Assets.Scripts
         {
             if (_active)
             {
-                _pointerTransform.position = Input.mousePosition;
+                var locPos = new Vector2();
+                RectTransformUtility.ScreenPointToLocalPointInRectangle(_aimTransform, Input.mousePosition,
+                    null, out locPos);
+
+                var radius = _aimTransform.sizeDelta.x / 2;
+                var distance = new Vector2(locPos.x, locPos.y).magnitude;
+
+                if(distance <= radius)
+                    _pointerTransform.localPosition = locPos;
             }
         }
 
