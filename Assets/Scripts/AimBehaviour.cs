@@ -3,7 +3,7 @@ using UnityEngine.EventSystems;
 
 namespace Assets.Scripts
 {
-    public class Aim : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
+    public class AimBehaviour : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     {
         [SerializeField]
         private GameObject _pointer;
