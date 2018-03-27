@@ -7,6 +7,9 @@ using UnityEngine.SceneManagement;
 public class Main : MonoBehaviour
 {
     [SerializeField]
+    private GameObject _aimUi;
+
+    [SerializeField]
     private GameObject _ball = null;
     private Rigidbody _ballBody;
 
@@ -31,7 +34,15 @@ public class Main : MonoBehaviour
 
         _impulse = Util.CalcImpulse(_ballBody.mass, _ballServeSpeedMs);
 	    _trajectory = _ball.GetComponent<LineRenderer>();
+
+	    var aim = _aimUi.GetComponent<AimBehaviour>();
+	    aim.OnClick = HandleAimClick;
 	}
+
+    public void HandleAimClick(Vector2 pos)
+    {
+        Debug.Log(pos.ToString());
+    }
 	
 	// Update is called once per frame
 	void Update ()

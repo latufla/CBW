@@ -537,6 +537,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b29ebcad02b168a4a957f62ad619ff7b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _aimUi: {fileID: 1756178176}
   _ball: {fileID: 2000280588}
   _ballServeSpeedKmH: 80
   _height: 3.1
@@ -645,6 +646,11 @@ Prefab:
 --- !u!224 &1428709041 stripped
 RectTransform:
   m_PrefabParentObject: {fileID: 224371699355009716, guid: d0b28056a1bf15443a20db4f38acbb99,
+    type: 2}
+  m_PrefabInternal: {fileID: 1428709040}
+--- !u!1 &1756178176 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 1620299499241868, guid: d0b28056a1bf15443a20db4f38acbb99,
     type: 2}
   m_PrefabInternal: {fileID: 1428709040}
 --- !u!224 &1847920110 stripped

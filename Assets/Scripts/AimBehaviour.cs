@@ -1,10 +1,13 @@
 ﻿using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.EventSystems;
 
 namespace Assets.Scripts
 {
-    public class AimBehaviour : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
+    public class AimBehaviour : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
     {
+        public UnityAction<Vector2> OnClick;
+
         [SerializeField]
         private GameObject _pointer;
 
@@ -41,6 +44,7 @@ namespace Assets.Scripts
             _active = true;
             Debug.Log("Enter");
         }
+
         public void OnPointerExit(PointerEventData eventData)
         {
             _active = false;
@@ -48,6 +52,14 @@ namespace Assets.Scripts
             Debug.Log("Exit");
         }
 
-        
+        public void OnPointerClick(PointerEventData eventData)
+        {
+            if (OnClick != null)
+            {
+                var radius = _aimTransform.sizeDelta.x / 2;
+                var point = _pointerTransform.localPosition / radius;
+                OnClick(point);
+            }
+        }        
     }
 }
