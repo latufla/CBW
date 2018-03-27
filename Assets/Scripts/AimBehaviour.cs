@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 namespace Assets.Scripts
 {
@@ -12,12 +13,15 @@ namespace Assets.Scripts
 
         private RectTransform _aimTransform;
 
+        private Text _positionText;
+
         private bool _active;
 
         public void Start()
         {
             _aimTransform = gameObject.GetComponent<RectTransform>();
             _pointerTransform = _pointer.GetComponent<RectTransform>();
+            _positionText = gameObject.GetComponentInChildren<Text>();
         }
 
         public void Update()
@@ -33,9 +37,13 @@ namespace Assets.Scripts
 
                 locPos.x = Mathf.Round(locPos.x * 10) / 10;
                 locPos.y = Mathf.Round(locPos.y * 10) / 10;
-                
+
                 if (distance <= radius)
+                {
                     _pointerTransform.localPosition = locPos;
+                    _positionText.text = CalcPoint().ToString();
+                }
+                    
             }
         }
 
