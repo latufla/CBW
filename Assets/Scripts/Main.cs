@@ -28,7 +28,6 @@ public class Main : MonoBehaviour
     [SerializeField]
     private GameObject _pointSphere = null;
 
-    private LineRenderer _trajectory = null;
 	// Use this for initialization
 	void Start ()
 	{
@@ -36,8 +35,6 @@ public class Main : MonoBehaviour
 	    _ballTransform = _ball.GetComponent<Transform>();
 
         _ballServeSpeedMs = Util.ToMs(_ballServeSpeedKmH);
-
-	    _trajectory = _ball.GetComponent<LineRenderer>();
 	}
 
 
@@ -72,38 +69,17 @@ public class Main : MonoBehaviour
         // serve trajectory
 	    if (Input.GetKeyDown(KeyCode.LeftControl))
 	    {
-	        var velocity = _ballServeSpeedMs * (Vector3.forward * -1);
-            var pos = new Vector3();
-	        var positions = new List<Vector3>();
-	        for (var i = 0.0f; i < 1.0f; i += 0.05f)
-	        {
-                var deltaTime = i;
-                pos.x = _ballBody.transform.position.x + velocity.x * deltaTime;
-                pos.y = _ballBody.transform.position.y + velocity.y * deltaTime + 0.5f * Physics.gravity.y * deltaTime * deltaTime;
-                pos.z = _ballBody.transform.position.z + velocity.z * deltaTime;
-                positions.Add(pos);
-            }
-	        _trajectory.enabled = true;
-	        BuildTrajectoryLine(positions);
+	        _ballBehaviour.DebugShowHitTrajectory(Vector3.back, _ballServeSpeedMs);
 	    }
 
         // serve
         if (Input.GetKeyDown(KeyCode.LeftShift))
         {
-            _ballBehaviour.Serve(_ballServeSpeedMs);
+            _ballBehaviour.Hit(Vector3.back, _ballServeSpeedMs);
         }
     }
 
     void FixedUpdate()
     {
-    }
-
-    void BuildTrajectoryLine(List<Vector3> positions)
-    {
-        _trajectory.positionCount = positions.Count;
-        for (var i = 0; i < positions.Count; ++i)
-        {
-            _trajectory.SetPosition(i, positions[i]);
-        }
     }
 }
