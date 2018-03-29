@@ -15,8 +15,8 @@ namespace Assets.Scripts
 
         private Transform _body;
 
-        private Vector2 _hitPoint;
-        public Vector2 HitPoint
+        private Vector3 _hitPoint = new Vector3();
+        public Vector3 HitPoint
         {
             get { return _hitPoint; }
             set
@@ -37,8 +37,6 @@ namespace Assets.Scripts
 
             _debugHitPointBody = _debugHitPoint.GetComponent<Transform>();
             _debugHitPointBody.SetParent(_body, false);
-            
-            HitPoint = new Vector2(0.0f, 0.0f);
         }
 
         public void Hit()
@@ -53,10 +51,10 @@ namespace Assets.Scripts
 
         private Vector3 CalcHitPoint()
         {
-            var radius = 0.5f;
-            var pos = new Vector3(-_hitPoint.x, _hitPoint.y, 0);
-            pos.x *= radius;
-            pos.y *= radius;
+            //var radius = 0.5f;
+            var pos = new Vector3(_hitPoint.x, _hitPoint.y, _hitPoint.z);
+            //pos.x *= radius;
+            //pos.y *= radius;
             return pos;
         }
 
@@ -65,11 +63,5 @@ namespace Assets.Scripts
             _debugHitPointBody.localPosition = CalcHitPoint();
             _debugHitPoint.SetActive(true);
         }
-
-        private float CalcRadius()
-        {
-            return _body.localScale.x / 2;;
-        }
-
     }
 }

@@ -60,7 +60,8 @@ namespace Assets.Scripts
         public Vector2 CalcPoint()
         {
             var radius = _aimTransform.sizeDelta.x / 2;
-            return _pointerTransform.localPosition / radius;
+            var pos = _pointerTransform.localPosition;
+            return new Vector2(pos.x, pos.y) / radius;
         }       
     }
 }

@@ -13,6 +13,7 @@ public class Main : MonoBehaviour
     private GameObject _ball = null;
     [SerializeField]    
     private BallBehaviour _ballBehaviour;
+    private Transform _ballTransform;
     private Rigidbody _ballBody;
 
     [SerializeField]
@@ -32,6 +33,8 @@ public class Main : MonoBehaviour
 	void Start ()
 	{
 	    _ballBody = _ball.GetComponent<Rigidbody>();
+	    _ballTransform = _ball.GetComponent<Transform>();
+
         _ballServeSpeedMs = Util.ToMs(_ballServeSpeedKmH);
 
         _impulse = Util.CalcImpulse(_ballBody.mass, _ballServeSpeedMs);
@@ -50,7 +53,16 @@ public class Main : MonoBehaviour
         if(Input.GetKeyDown(KeyCode.Mouse0))
         {
             var pos = _aimBehaviour.CalcPoint();
-            _ballBehaviour.HitPoint = pos;
+            var fromPoint = new Vector3(-pos.x * 0.5f, pos.y * 0.5f, 1);
+            fromPoint = _ballTransform.TransformPoint(fromPoint);
+
+            var dot = DebugUtil.CreateDot(_pointSphere, fromPoint);
+            var hit = new RaycastHit();
+            var ray = Physics.Raycast(new Ray(fromPoint, Vector3.back), out hit);
+            print(hit.collider);
+
+            var hitPoint = _ballTransform.InverseTransformPoint(hit.point);
+            _ballBehaviour.HitPoint = hitPoint;
         }
 
 	    if (Input.GetKeyDown(KeyCode.Return))
