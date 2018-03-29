@@ -14,12 +14,14 @@ namespace Assets.Scripts
         private Transform _debugHitPointTransform;
 
         private Transform _transform;
+        private Rigidbody _body;
 
-        private Vector3 _hitPoint = new Vector3();
+        private Vector3 _contactPoint = new Vector3();
         
         void Start()
         {
             _transform = gameObject.GetComponent<Transform>();
+            _body = gameObject.GetComponent<Rigidbody>();
 
             _debugHitPoint = DebugUtil.CreateDot(_debugHitPointPrefab, new Vector3());
             _debugHitPoint.SetActive(false);
@@ -27,25 +29,28 @@ namespace Assets.Scripts
             _debugHitPointTransform = _debugHitPoint.GetComponent<Transform>();
         }
 
-        public void SetHitPoint(Vector2 raito)
+        public void SetContactPoint(Vector2 raito)
         {
             var fromPoint = new Vector3(-raito.x * 0.5f, raito.y * 0.5f, 1);
             fromPoint = _transform.TransformPoint(fromPoint);
 
             var hit = new RaycastHit();
+            //var success = Physics.Raycast(new Ray(fromPoint, Vector3.back), out hit, Mathf.Infinity, LayerMask.NameToLayer("Ball"));
             var success = Physics.Raycast(new Ray(fromPoint, Vector3.back), out hit);
             if (!success)
                 return;
 
-            _hitPoint = hit.point;
+            _contactPoint = hit.point;
 
-            _debugHitPointTransform.localPosition = _hitPoint;
+            _debugHitPointTransform.position = hit.point;
             _debugHitPoint.SetActive(true);
         }
 
-        public void Hit()
+        public void Serve(float speedMs)
         {
-            
+            var impulse = Util.CalcImpulse(_body.mass, speedMs);
+            _body.AddForceAtPosition(Vector3.back * impulse, _contactPoint, ForceMode.Impulse);
+            _body.useGravity = true;
         }
         
         void Update()

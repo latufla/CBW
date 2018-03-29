@@ -283,8 +283,8 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 644409930}
-  m_LocalRotation: {x: 0.0007998944, y: 0.9900593, z: -0.14053486, w: 0.005644471}
-  m_LocalPosition: {x: 0.1516882, y: 3.9115872, z: 11.2501335}
+  m_LocalRotation: {x: 0.00048301928, y: 0.9933279, z: -0.11524781, w: 0.004168749}
+  m_LocalPosition: {x: 0.014178137, y: 3.7362196, z: 10.293698}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -540,7 +540,7 @@ MonoBehaviour:
   _aimBehaviour: {fileID: 1756178177}
   _ball: {fileID: 2000280588}
   _ballBehaviour: {fileID: 2000280595}
-  _ballServeSpeedKmH: 80
+  _ballServeSpeedKmH: 10
   _height: 3.1
   _pointSphere: {fileID: 1814000429761588, guid: 9965ffd5c9019084d8a8cab2f4d6d1f4,
     type: 2}

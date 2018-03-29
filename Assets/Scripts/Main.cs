@@ -37,7 +37,6 @@ public class Main : MonoBehaviour
 
         _ballServeSpeedMs = Util.ToMs(_ballServeSpeedKmH);
 
-        _impulse = Util.CalcImpulse(_ballBody.mass, _ballServeSpeedMs);
 	    _trajectory = _ball.GetComponent<LineRenderer>();
 	}
 
@@ -53,7 +52,7 @@ public class Main : MonoBehaviour
         if(Input.GetKeyDown(KeyCode.Mouse0))
         {
             var aimPos = _aimBehaviour.CalcRatioPoint();
-            _ballBehaviour.SetHitPoint(aimPos);
+            _ballBehaviour.SetContactPoint(aimPos);
         }
 
 	    if (Input.GetKeyDown(KeyCode.Return))
@@ -91,29 +90,7 @@ public class Main : MonoBehaviour
         // serve
         if (Input.GetKeyDown(KeyCode.LeftShift))
         {
-            // x = r * cos(s) * sin(t)
-            // y = r * sin(s) * sin(t)
-            // z = r * cos(t)
-
-            var r = _ballBody.transform.localScale.x / 2; // whatewer its ball
-            var t = 45 * Mathf.Deg2Rad;
-            var s = 90 * Mathf.Deg2Rad;
-
-            var relPos = new Vector3
-            {
-                x = r * Mathf.Cos(s) * Mathf.Sin(t),
-                y = r * Mathf.Cos(t),
-                z = r * Mathf.Sin(s) * Mathf.Sin(t)
-            };
-
-            //var relPos = new Vector3(0, 0.21f / 2, 0);
-            var position = _ballBody.position + relPos;
-
-           // var dot = DebugUtil.CreateDot(_pointSphere, position);
-
-            // _ballBody.AddForceAtPosition(Vector3.forward * -1 * _impulse, position, ForceMode.Impulse);
-            _ballBody.AddForceAtPosition(Vector3.forward * -1 * _impulse, new Vector3(0, 0, 0), ForceMode.Impulse);
-            _ballBody.useGravity = true;
+            _ballBehaviour.Serve(_ballServeSpeedMs);
         }
     }
 
