@@ -11,32 +11,36 @@ namespace Assets.Scripts
         [SerializeField]
         private GameObject _debugHitPointPrefab;
         private GameObject _debugHitPoint;
-        private Transform _debugHitPointBody;
+        private Transform _debugHitPointTransform;
 
-        private Transform _body;
+        private Transform _transform;
 
         private Vector3 _hitPoint = new Vector3();
-        public Vector3 HitPoint
-        {
-            get { return _hitPoint; }
-            set
-            {
-                _hitPoint = value;
-                DebugDrawHitPoint();
-            
-                Debug.Log(_hitPoint.ToString());
-            }
-        }
         
         void Start()
         {
-            _body = gameObject.GetComponent<Transform>();
+            _transform = gameObject.GetComponent<Transform>();
 
-            _debugHitPoint = DebugUtil.CreateDot(_debugHitPointPrefab, HitPoint);
+            _debugHitPoint = DebugUtil.CreateDot(_debugHitPointPrefab, new Vector3());
             _debugHitPoint.SetActive(false);
 
-            _debugHitPointBody = _debugHitPoint.GetComponent<Transform>();
-            _debugHitPointBody.SetParent(_body, false);
+            _debugHitPointTransform = _debugHitPoint.GetComponent<Transform>();
+        }
+
+        public void SetHitPoint(Vector2 raito)
+        {
+            var fromPoint = new Vector3(-raito.x * 0.5f, raito.y * 0.5f, 1);
+            fromPoint = _transform.TransformPoint(fromPoint);
+
+            var hit = new RaycastHit();
+            var success = Physics.Raycast(new Ray(fromPoint, Vector3.back), out hit);
+            if (!success)
+                return;
+
+            _hitPoint = hit.point;
+
+            _debugHitPointTransform.localPosition = _hitPoint;
+            _debugHitPoint.SetActive(true);
         }
 
         public void Hit()
@@ -47,21 +51,6 @@ namespace Assets.Scripts
         void Update()
         {
 
-        }
-
-        private Vector3 CalcHitPoint()
-        {
-            //var radius = 0.5f;
-            var pos = new Vector3(_hitPoint.x, _hitPoint.y, _hitPoint.z);
-            //pos.x *= radius;
-            //pos.y *= radius;
-            return pos;
-        }
-
-        private void DebugDrawHitPoint()
-        {
-            _debugHitPointBody.localPosition = CalcHitPoint();
-            _debugHitPoint.SetActive(true);
         }
     }
 }

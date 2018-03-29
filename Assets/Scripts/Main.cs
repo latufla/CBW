@@ -52,17 +52,8 @@ public class Main : MonoBehaviour
     {
         if(Input.GetKeyDown(KeyCode.Mouse0))
         {
-            var pos = _aimBehaviour.CalcPoint();
-            var fromPoint = new Vector3(-pos.x * 0.5f, pos.y * 0.5f, 1);
-            fromPoint = _ballTransform.TransformPoint(fromPoint);
-
-            var dot = DebugUtil.CreateDot(_pointSphere, fromPoint);
-            var hit = new RaycastHit();
-            var ray = Physics.Raycast(new Ray(fromPoint, Vector3.back), out hit);
-            print(hit.collider);
-
-            var hitPoint = _ballTransform.InverseTransformPoint(hit.point);
-            _ballBehaviour.HitPoint = hitPoint;
+            var aimPos = _aimBehaviour.CalcRatioPoint();
+            _ballBehaviour.SetHitPoint(aimPos);
         }
 
 	    if (Input.GetKeyDown(KeyCode.Return))

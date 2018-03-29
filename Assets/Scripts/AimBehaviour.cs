@@ -41,7 +41,7 @@ namespace Assets.Scripts
                 if (distance <= radius)
                 {
                     _pointerTransform.localPosition = locPos;
-                    _positionText.text = CalcPoint().ToString();
+                    _positionText.text = CalcRatioPoint().ToString();
                 }
                     
             }
@@ -57,7 +57,7 @@ namespace Assets.Scripts
             _active = false;
         }
 
-        public Vector2 CalcPoint()
+        public Vector2 CalcRatioPoint()
         {
             var radius = _aimTransform.sizeDelta.x / 2;
             var pos = _pointerTransform.localPosition;
